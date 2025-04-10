@@ -1,37 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import StudentForm from './StudentForm';
+import React from 'react';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 import '../styles/AdminDashboard.css';
+import { Routes, Route } from 'react-router-dom';
+import AdminProfile from './AdminProfile';
+import CreateStudent from './CreateStudent';
+import CreateFaculty from './CreateFaculty';
+import ListStudents from './ListStudents';
+import ListFaculty from './ListFaculty';
 
 const AdminDashboard = () => {
-  const [students, setStudents] = useState([]);
-
-  useEffect(() => {
-    const fetchStudents = async () => {
-      const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/admin/students', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setStudents(res.data);
-    };
-    fetchStudents();
-  }, []);
-
-  const addStudent = (student) => {
-    setStudents([...students, student]);
-  };
-
   return (
-    <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
-      <StudentForm onAddStudent={addStudent} />
-      <div className="student-list">
-        {students.map((student) => (
-          <div key={student._id} className="student-card">
-            <p>{student.name} - {student.email}</p>
-            <p>{student.department} | Year: {student.year} | Section: {student.section}</p>
-          </div>
-        ))}
+    <div className="admin-dashboard-wrapper">
+      <Navbar />
+      <div className="admin-dashboard-content">
+        <Sidebar role="admin" />
+        <div className="admin-dashboard animate-content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <h1 className="dashboard-title animate-title">Admin Dashboard</h1>
+                  <p className="welcome-text animate-text">Welcome to the Admin Dashboard. Manage your institution here.</p>
+                </>
+              }
+            />
+            <Route path="/profile" element={<AdminProfile />} />
+            <Route path="/create-student" element={<CreateStudent />} />
+            <Route path="/create-faculty" element={<CreateFaculty />} />
+            <Route path="/list-students" element={<ListStudents />} />
+            <Route path="/list-faculty" element={<ListFaculty />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );

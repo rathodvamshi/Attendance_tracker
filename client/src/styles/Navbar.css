@@ -1,0 +1,80 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, rgba(30, 64, 175, 0.95), rgba(59, 130, 246, 0.95)); /* Light mode: Professional blue */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  height: 70px;
+  transition: background 0.5s ease;
+}
+
+.navbar-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.color-toggle-btn, .logout-btn {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #ffffff;
+}
+
+.color-toggle-btn {
+  background: #10b981; /* Professional green */
+}
+
+.color-toggle-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn {
+  background: #ef4444; /* Professional red */
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Mode */
+.dark .navbar {
+  background: linear-gradient(90deg, rgba(31, 41, 55, 0.95), rgba(55, 65, 81, 0.95)); /* Dark mode: Deep gray-blue */
+}
+
+.dark .color-toggle-btn {
+  background: #34d399; /* Lighter green for contrast */
+}
+
+.dark .color-toggle-btn:hover {
+  background: #10b981;
+}
+
+.dark .logout-btn {
+  background: #f87171; /* Softer red for dark mode */
+}
+
+.dark .logout-btn:hover {
+  background: #ef4444;
+}

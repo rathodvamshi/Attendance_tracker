@@ -1,0 +1,74 @@
+smart-attendance-tracker/
+│
+├── .gitignore
+├── README.md
+│
+├── client/
+│   ├── node_modules/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── AdminDashboard.js
+│   │   │   ├── AttendanceTable.js
+│   │   │   ├── AttendanceView.js
+│   │   │   ├── FacultyDashboard.js
+│   │   │   ├── Loader.js
+│   │   │   ├── Login.js
+│   │   │   ├── ManageAttendance.js
+│   │   │   ├── Profile.js
+│   │   │   ├── Sidebar.js
+│   │   │   ├── StudentDetailsModal.js
+│   │   │   ├── StudentForm.js
+│   │   │   ├── Toast.js
+│   │   │   └── ViewStudent.js
+│   │   ├── context/
+│   │   │   └── AuthContext.js
+│   │   ├── styles/
+│   │   │   ├── AdminDashboard.css
+│   │   │   ├── AttendanceTable.css
+│   │   │   ├── AttendanceView.css
+│   │   │   ├── FacultyDashboard.css
+│   │   │   ├── global.css
+│   │   │   ├── Login.css
+│   │   │   ├── ManageAttendance.css
+│   │   │   ├── Profile.css
+│   │   │   ├── Sidebar.css
+│   │   │   ├── StudentDetailsModal.css
+│   │   │   ├── StudentForm.css
+│   │   │   └── ViewStudent.css
+│   │   ├── App.css
+│   │   ├── App.js
+│   │   ├── App.test.js
+│   │   ├── index.css
+│   │   ├── index.js
+│   │   ├── logo.svg
+│   │   ├── reportWebVitals.js
+│   │   └── setupTests.js
+│   ├── package.json
+│   ├── package-lock.json
+│   └── README.md
+│
+└── server/
+    ├── config/
+    │   └── db.js
+    ├── controllers/
+    │   ├── adminController.js
+    │   ├── authController.js
+    │   └── facultyController.js
+    ├── middleware/
+    │   └── authMiddleware.js
+    ├── models/
+    │   ├── Attendance.js
+    │   ├── Faculty.js
+    │   └── Student.js
+    ├── routes/
+    │   ├── admin.js
+    │   ├── auth.js
+    │   └── faculty.js
+    ├── node_modules/
+    ├── .env
+    ├── package.json
+    ├── package-lock.json
+    ├── seed.js
+    └── server.js

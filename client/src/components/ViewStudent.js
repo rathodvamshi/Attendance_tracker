@@ -1,54 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../styles/ViewStudent.css';
 
 const ViewStudent = () => {
   const [filters, setFilters] = useState({ department: '', year: '', section: '' });
-  const [search, setSearch] = useState('');
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [editingStudent, setEditingStudent] = useState(null);
   const [error, setError] = useState('');
 
-  // Fetch students when filters or search change
-  useEffect(() => {
-    fetchStudents();
-  }, [filters, search]); // Trigger fetch on filter or search change
-
-  const fetchStudents = async () => {
+  // Debounced fetch function
+  const fetchStudents = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const params = search
-        ? { search }
-        : { department: filters.department, year: filters.year, section: filters.section };
-
-      if (!search && (!filters.department || !filters.year || !filters.section)) {
-        setError('Please provide a search term or select all filters.');
+      if (!token) {
+        setError('Unauthorized. Please log in again.');
         setStudents([]);
         return;
       }
 
-      const res = await axios.get('http://localhost:5000/api/faculty/students/search', {
+      const { department, year, section } = filters;
+      if (!department || !year || !section) {
+        setError('Please select all filters (Department, Year, Section).');
+        setStudents([]);
+        return;
+      }
+
+      const res = await axios.get('http://localhost:5000/api/faculty/students', {
         headers: { Authorization: `Bearer ${token}` },
-        params,
+        params: { department, year, section },
       });
-      setStudents(res.data);
-      setError(res.data.length === 0 ? 'No students found.' : '');
+
+      const data = Array.isArray(res.data) ? res.data : res.data.students || [];
+      setStudents(data);
+      setError(data.length === 0 ? 'No students found for these filters.' : '');
     } catch (err) {
-      setError('Failed to fetch students.');
+      if (err.response?.status === 401) {
+        setError('Session expired. Please log in again.');
+      } else {
+        setError('Failed to fetch students. Please try again.');
+      }
       setStudents([]);
       console.error(err);
     }
-  };
+  }, [filters]);
+
+  // Fetch students when filters change
+  useEffect(() => {
+    const debounceFetch = setTimeout(() => {
+      fetchStudents();
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(debounceFetch);
+  }, [fetchStudents]);
 
   const handleFilterChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
-    setSearch(''); // Clear search when filters change
-  };
-
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-    setFilters({ department: '', year: '', section: '' }); // Clear filters when searching
   };
 
   const handleView = (student) => {
@@ -62,6 +69,11 @@ const ViewStudent = () => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Unauthorized. Please log in again.');
+        return;
+      }
+
       const res = await axios.put(
         `http://localhost:5000/api/faculty/students/${editingStudent._id}`,
         editingStudent,
@@ -72,7 +84,7 @@ const ViewStudent = () => {
       setStudents((prev) =>
         prev.map((s) => (s._id === res.data.student._id ? res.data.student : s))
       );
-      alert(res.data.message);
+      alert(res.data.message || 'Student updated successfully.');
     } catch (err) {
       setError('Failed to update student.');
       console.error(err);
@@ -80,37 +92,29 @@ const ViewStudent = () => {
   };
 
   return (
-    <div className="view-student">
-      <h1 className="title">View Students</h1>
+    <div className="view-student animate-content">
+      <h1 className="title animate-title">View Students</h1>
       <div className="search-container">
         <div className="filters">
           <select name="department" value={filters.department} onChange={handleFilterChange}>
-            <option value="">Department</option>
+            <option value="">Select Department</option>
             <option value="CSE">CSE</option>
             <option value="ECE">ECE</option>
           </select>
           <select name="year" value={filters.year} onChange={handleFilterChange}>
-            <option value="">Year</option>
+            <option value="">Select Year</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
           </select>
           <select name="section" value={filters.section} onChange={handleFilterChange}>
-            <option value="">Section</option>
+            <option value="">Select Section</option>
             <option value="A">A</option>
             <option value="B">B</option>
           </select>
-          <button onClick={fetchStudents} className="fetch-btn">Fetch</button>
+          <button onClick={fetchStudents} className="fetch-btn">Fetch Students</button>
         </div>
-        <input
-          type="text"
-          placeholder="Search by name or email"
-          value={search}
-          onChange={handleSearchChange}
-          onKeyPress={(e) => e.key === 'Enter' && fetchStudents()}
-          className="search-input"
-        />
       </div>
       {error && <p className="error">{error}</p>}
       {students.length > 0 && (

@@ -1,69 +1,60 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import '../styles/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('faculty');
   const [error, setError] = useState('');
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password || !role) {
-      setError('Please fill in all fields');
-      return;
-    }
-
     try {
-      console.log('Sending login request:', { email, password, role }); // Debugging log
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password, role });
-      localStorage.setItem('token', res.data.token);
-      console.log('Login successful, token:', res.data.token);
-      if (res.data.role === 'admin') navigate('/admin');
-      else if (res.data.role === 'faculty') navigate('/faculty');
-      else navigate('/');
-      setError('');
+      const userRole = await login(email, password, role);
+      navigate(userRole === 'admin' ? '/admin' : '/faculty');
     } catch (err) {
-      console.error('Login error:', err.response?.data);
-      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
   return (
-    <div className="login-container">
-      <h2 className="login-title">Login</h2>
-      {error && <p className="error">{error}</p>}
+    <div className="login-container animate-login">
+      <h1 className="login-title">Login</h1>
+      {error && <p className="login-error animate-error">{error}</p>}
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
+          <label>Email</label>
           <input
             type="email"
-            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="animate-input"
           />
         </div>
         <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
-            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="animate-input"
           />
         </div>
         <div className="form-group">
-          <select value={role} onChange={(e) => setRole(e.target.value)} required>
-            <option value="">Select Role</option>
-            <option value="admin">Admin</option>
+          <label>Role</label>
+          <select value={role} onChange={(e) => setRole(e.target.value)} className="animate-input">
             <option value="faculty">Faculty</option>
+            <option value="admin">Admin</option>
             <option value="student">Student</option>
           </select>
         </div>
-        <button type="submit" className="login-btn">Login</button>
+        <button type="submit" className="login-btn animate-btn">Login</button>
       </form>
     </div>
   );
