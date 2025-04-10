@@ -1,0 +1,11 @@
+# Ignore node_modules folders
+client/node_modules/
+server/node_modules/
+
+# Ignore environment variables
+server/.env
+
+# OS and IDE files
+.DS_Store
+*.log
+.env

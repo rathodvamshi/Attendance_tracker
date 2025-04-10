@@ -1,0 +1,149 @@
+.faculty-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2f3 0%, #d1d5db 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+.content {
+  margin-left: 250px;
+  padding: 3rem;
+  flex-grow: 1;
+  transition: all 0.4s ease-in-out;
+  background: #ffffff;
+  border-radius: 20px 0 0 20px;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  animation: slideInContent 0.6s ease-out;
+}
+
+.content:hover {
+  box-shadow: -15px 0 40px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  animation: bounceIn 1s ease-out;
+  background: linear-gradient(to right, #1e3a8a, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-text {
+  font-size: 1.3rem;
+  color: #4b5563;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  font-style: italic;
+  animation: fadeInUp 0.8s ease-out;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.filters {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  animation: slideUp 0.8s ease-out;
+  justify-content: center;
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.filters:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.filters select,
+.filters input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 1rem;
+  color: #374151;
+  transition: all 0.4s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  min-width: 150px;
+}
+
+.filters select:hover,
+.filters input:hover {
+  border-color: #93c5fd;
+  transform: scale(1.02);
+}
+
+.filters select:focus,
+.filters input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+  outline: none;
+  transform: scale(1.03);
+}
+
+/* Enhanced Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInContent {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+    padding: 1.5rem;
+    border-radius: 0;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+  }
+
+  .welcome-text {
+    font-size: 1.1rem;
+  }
+
+  .filters {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .filters select,
+  .filters input {
+    min-width: 120px;
+  }
+}
