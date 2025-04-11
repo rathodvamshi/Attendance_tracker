@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     await Faculty.insertMany([
       {
         name: 'Admin',
-        email: 'admin@college.com',
+        email: 'w',
         password: adminPassword,
         mobile: '9876543210',
         role: 'admin',
